@@ -1,20 +1,48 @@
-<h2>Log in</h2>
+<div class="container my-5 py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-5">
+      
+      <div class="card shadow-sm border-0 p-4 bg-white rounded-4">
+        
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-dark h3 mb-2">Iniciar sesión</h2>
+          <p class="text-muted small">
+            ¿No tenés cuenta todavía? <%= link_to "Registrate", new_registration_path(resource_name), class: "text-decoration-none fw-semibold text-primary" %>
+          </p>
+        </div>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="form-inputs">
+            <%= f.input :email,
+                        required: false,
+                        autofocus: true,
+                        label: "Correo electrónico",
+                        input_html: { autocomplete: "email", class: "form-control form-control-lg rounded-3 fs-6 mb-3" },
+                        label_html: { class: "form-label text-secondary small fw-medium mb-1" } %>
+            
+            <%= f.input :password,
+                        required: false,
+                        label: "Contraseña",
+                        input_html: { autocomplete: "current-password", class: "form-control form-control-lg rounded-3 fs-6 mb-3" },
+                        label_html: { class: "form-label text-secondary small fw-medium mb-1" } %>
+            
+            <% if devise_mapping.rememberable? %>
+              <div class="form-check mb-4 mt-2">
+                <%= f.check_box :remember_me, class: "form-check-input" %>
+                <%= f.label :remember_me, "Recordarme", class: "form-check-label text-secondary small fw-medium" %>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="form-actions">
+            <%= f.button :submit, "Ingresar", class: "btn btn-primary btn-lg w-100 rounded-3 py-2 fs-6 fw-semibold shadow-sm mb-3" %>
+          </div>
+        <% end %>
+
+        <div class="text-center pt-2 border-top border-light">
+          <%= render "devise/shared/links" %>
+        </div>
+
+      </div> </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
