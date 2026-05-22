@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_20_005004) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_22_014056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,21 +45,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_005004) do
   end
 
   create_table "doctors", force: :cascade do |t|
+    t.boolean "available", default: true
+    t.integer "consultation_price"
     t.datetime "created_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "license_number"
+    t.string "photo_url"
+    t.string "specialty"
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_doctors_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
     t.bigint "chat_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
-    t.string "message_type"
     t.boolean "read"
-    t.bigint "sender_user_id", null: false
+    t.string "role"
     t.datetime "sent_at"
     t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
-    t.index ["sender_user_id"], name: "index_messages_on_sender_user_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -88,6 +95,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_20_005004) do
   add_foreign_key "chats", "appointments"
   add_foreign_key "chats", "doctors"
   add_foreign_key "chats", "patients"
+  add_foreign_key "doctors", "users"
   add_foreign_key "messages", "chats"
-  add_foreign_key "messages", "users", column: "sender_user_id"
 end
