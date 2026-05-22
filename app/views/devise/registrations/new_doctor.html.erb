@@ -1,0 +1,383 @@
+<style>
+  :root {
+    --mh-blue: #3B82F6;
+    --mh-cyan: #06B6D4;
+    --mh-gradient: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  }
+
+  .mh-header-gradient {
+    background: var(--mh-gradient);
+  }
+
+  .mh-card-header {
+    background: var(--mh-gradient);
+    color: white;
+  }
+
+  .mh-btn-primary {
+    background: var(--mh-gradient);
+    border: none;
+    color: white;
+    transition: opacity 0.2s;
+  }
+
+  .mh-btn-primary:hover {
+    opacity: 0.88;
+    color: white;
+  }
+
+  .mh-icon-badge {
+    width: 72px;
+    height: 72px;
+    background: var(--mh-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .mh-section-card {
+    border: none;
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .mh-card-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .mh-alert-info {
+    background: rgba(6, 182, 212, 0.08);
+    border-left: 4px solid var(--mh-cyan);
+    border-radius: 8px;
+    color: #0e7490;
+  }
+
+  .mh-alert-warning {
+    background: rgba(59, 130, 246, 0.06);
+    border-left: 4px solid var(--mh-blue);
+    border-radius: 8px;
+    color: #1d4ed8;
+  }
+
+  .mh-upload-zone {
+    border: 2px dashed #93c5fd;
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.03);
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .mh-upload-zone:hover,
+  .mh-upload-zone.drag-over {
+    border-color: var(--mh-blue);
+    background: rgba(59, 130, 246, 0.07);
+  }
+
+  .mh-upload-zone input[type="file"] {
+    display: none;
+  }
+
+  .mh-pdf-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .mh-step-badge {
+    width: 28px;
+    height: 28px;
+    background: var(--mh-gradient);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--mh-blue);
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2);
+  }
+
+  .mh-link {
+    color: var(--mh-blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .mh-link:hover {
+    color: var(--mh-cyan);
+  }
+
+  .mh-brand-title span { color: var(--mh-blue); font-weight: 400; }
+  .mh-brand-title strong { color: var(--mh-cyan); }
+</style>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+
+      <%# ── Cabecera ── %>
+      <div class="text-center mb-4">
+        <div class="mh-icon-badge mb-3">
+          <i class="fa-solid fa-user-doctor fa-2x text-white"></i>
+        </div>
+        <h2 class="fw-bold mb-1 mh-brand-title">
+          <span>Med</span><strong>Hora</strong> · Registro de Médico
+        </h2>
+        <p class="text-muted mb-0">
+          Completa tu perfil profesional. Nuestro equipo revisará tu título antes de activar tu cuenta.
+        </p>
+      </div>
+
+      <%# ── Aviso de revisión ── %>
+      <div class="mh-alert-info d-flex align-items-start gap-3 p-3 mb-4">
+        <i class="fa-solid fa-circle-info fs-5 mt-1 flex-shrink-0"></i>
+        <div class="small">
+          <strong>Proceso de verificación en 3 pasos:</strong>
+          <div class="mt-2 d-flex flex-column gap-1">
+            <div class="d-flex align-items-center gap-2">
+              <span class="mh-step-badge">1</span> Completa el formulario y sube tu título en PDF
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="mh-step-badge">2</span> Nuestro equipo revisa tu documentación
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="mh-step-badge">3</span> Recibirás un correo cuando tu cuenta esté aprobada
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name),
+            html: { multipart: true, novalidate: false }) do |f| %>
+        <%= f.error_notification %>
+        <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+        <%# ── Sección 1: Datos Personales ── %>
+        <div class="card mh-section-card mb-4">
+          <div class="mh-card-header d-flex align-items-center gap-2">
+            <i class="fa-solid fa-id-card"></i>
+            <h6 class="mb-0 fw-semibold">Datos Personales</h6>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <%= f.input :first_name,
+                    label: "Nombre(s)",
+                    placeholder: "Ej: Carlos Andrés",
+                    input_html: { class: "form-control", autocomplete: "given-name" } %>
+              </div>
+              <div class="col-md-6">
+                <%= f.input :last_name,
+                    label: "Apellido(s)",
+                    placeholder: "Ej: Ramírez Gómez",
+                    input_html: { class: "form-control", autocomplete: "family-name" } %>
+              </div>
+              <div class="col-md-6">
+                <%= f.input :email,
+                    required: true,
+                    label: "Correo Electrónico",
+                    placeholder: "doctor@ejemplo.com",
+                    input_html: { class: "form-control", autocomplete: "email" } %>
+              </div>
+              <div class="col-md-6">
+                <%= f.input :phone,
+                    label: "Teléfono de Contacto",
+                    placeholder: "Ej: +54 9 11 1234-5678",
+                    input_html: { class: "form-control", autocomplete: "tel" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# ── Sección 2: Información Profesional ── %>
+        <div class="card mh-section-card mb-4">
+          <div class="mh-card-header d-flex align-items-center gap-2">
+            <i class="fa-solid fa-stethoscope"></i>
+            <h6 class="mb-0 fw-semibold">Información Profesional</h6>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <%= f.input :specialty,
+                    label: "Especialidad",
+                    as: :select,
+                    collection: [
+                      "Medicina General",
+                      "Cardiología",
+                      "Dermatología",
+                      "Endocrinología",
+                      "Gastroenterología",
+                      "Ginecología y Obstetricia",
+                      "Neurología",
+                      "Nefrología",
+                      "Oftalmología",
+                      "Oncología",
+                      "Otorrinolaringología",
+                      "Pediatría",
+                      "Psiquiatría",
+                      "Neumología",
+                      "Reumatología",
+                      "Traumatología y Ortopedia",
+                      "Urología",
+                      "Cirugía General",
+                      "Anestesiología",
+                      "Radiología e Imágenes"
+                    ],
+                    include_blank: "— Selecciona una especialidad —",
+                    input_html: { class: "form-select" } %>
+              </div>
+              <div class="col-md-6">
+                <%= f.input :license_number,
+                    label: "N.º de Matrícula Profesional",
+                    placeholder: "Ej: MP 12345",
+                    input_html: { class: "form-control" } %>
+              </div>
+              <div class="col-12">
+                <%= f.input :bio,
+                    label: "Presentación Profesional",
+                    as: :text,
+                    placeholder: "Describe tu experiencia, formación académica y áreas de interés clínico...",
+                    input_html: { class: "form-control", rows: 4 } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# ── Sección 3: Título Profesional ── %>
+        <div class="card mh-section-card mb-4">
+          <div class="mh-card-header d-flex align-items-center gap-2">
+            <i class="fa-solid fa-file-pdf"></i>
+            <h6 class="mb-0 fw-semibold">Validación de Título Profesional</h6>
+          </div>
+          <div class="card-body p-4">
+            <div class="mh-alert-warning d-flex align-items-start gap-2 p-3 mb-4 small">
+              <i class="fa-solid fa-triangle-exclamation mt-1 flex-shrink-0"></i>
+              <span>
+                <strong>Documento obligatorio.</strong> Adjunta tu título o diploma universitario en PDF.
+                Este archivo será revisado por nuestro equipo para habilitar tu cuenta.
+              </span>
+            </div>
+
+            <%# Zona de carga ── %>
+            <label for="doctor_titulo_pdf" class="mh-upload-zone d-block" id="upload-label">
+              <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2" style="color: var(--mh-blue);"></i>
+              <p class="fw-semibold mb-1" style="color: var(--mh-blue);">Haz clic para seleccionar el PDF</p>
+              <p class="text-muted small mb-0">o arrastra y suelta aquí · Solo PDF · Máx. 10 MB</p>
+              <%= f.input :titulo_pdf,
+                  label: false,
+                  as: :file,
+                  input_html: {
+                    id: "doctor_titulo_pdf",
+                    accept: ".pdf",
+                    style: "display:none"
+                  } %>
+            </label>
+
+            <%# Preview del archivo ── %>
+            <div class="mh-pdf-preview d-none" id="pdf-preview">
+              <i class="fa-solid fa-file-pdf fa-lg" style="color: #ef4444;"></i>
+              <span class="small fw-semibold text-truncate" id="pdf-filename"></span>
+              <span class="badge ms-auto" style="background: var(--mh-gradient);">Listo</span>
+            </div>
+          </div>
+        </div>
+
+        <%# ── Sección 4: Contraseña ── %>
+        <div class="card mh-section-card mb-4">
+          <div class="mh-card-header d-flex align-items-center gap-2">
+            <i class="fa-solid fa-lock"></i>
+            <h6 class="mb-0 fw-semibold">Credenciales de Acceso</h6>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <%= f.input :password,
+                    required: true,
+                    label: "Contraseña",
+                    hint: ("Mínimo #{@minimum_password_length} caracteres" if @minimum_password_length),
+                    input_html: { class: "form-control", autocomplete: "new-password" } %>
+              </div>
+              <div class="col-md-6">
+                <%= f.input :password_confirmation,
+                    required: true,
+                    label: "Confirmar Contraseña",
+                    input_html: { class: "form-control", autocomplete: "new-password" } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%# ── Términos y envío ── %>
+        <div class="d-flex flex-column align-items-center gap-3 pb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="terms" required
+                   style="border-color: var(--mh-blue);">
+            <label class="form-check-label text-muted small" for="terms">
+              Acepto que mis datos y documentos sean revisados por el equipo de <strong>MedHora</strong>
+              para verificar mi habilitación profesional.
+            </label>
+          </div>
+
+          <%= f.button :submit, class: "btn mh-btn-primary btn-lg px-5 py-2 fw-semibold rounded-pill shadow-sm" do %>
+            <i class="fa-solid fa-paper-plane me-2"></i>Enviar Solicitud
+          <% end %>
+
+          <p class="text-muted small mb-0">
+            ¿Ya tienes cuenta?
+            <%= link_to "Inicia sesión aquí", new_user_session_path, class: "mh-link" %>
+          </p>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input    = document.getElementById("doctor_titulo_pdf");
+    const preview  = document.getElementById("pdf-preview");
+    const filename = document.getElementById("pdf-filename");
+    const zone     = document.getElementById("upload-label");
+
+    if (!input) return;
+
+    input.addEventListener("change", function () {
+      if (this.files && this.files[0]) {
+        filename.textContent = this.files[0].name;
+        preview.classList.remove("d-none");
+      } else {
+        preview.classList.add("d-none");
+      }
+    });
+
+    zone.addEventListener("dragover",  function (e) { e.preventDefault(); zone.classList.add("drag-over"); });
+    zone.addEventListener("dragleave", function ()  { zone.classList.remove("drag-over"); });
+    zone.addEventListener("drop",      function (e) {
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+      if (e.dataTransfer.files[0]) {
+        input.files = e.dataTransfer.files;
+        filename.textContent = e.dataTransfer.files[0].name;
+        preview.classList.remove("d-none");
+      }
+    });
+  });
+</script>

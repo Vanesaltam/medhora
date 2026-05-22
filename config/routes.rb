@@ -1,11 +1,23 @@
 Rails.application.routes.draw do
   devise_for :users
+  get  "doctors/sign_in",  to: "doctors/sessions#new",    as: :new_doctor_session
+  post "doctors/sign_in",  to: "doctors/sessions#create",  as: :doctor_session
+  delete "doctors/sign_out", to: "doctors/sessions#destroy", as: :destroy_doctor_session
   root to: "pages#home"
   resources :doctors
   resources :patients
   resources :appointments
   resources :reviews
-  
+
+  namespace :admin do
+    resources :doctors, only: [:index] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
