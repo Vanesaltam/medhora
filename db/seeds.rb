@@ -4,8 +4,8 @@ Doctor.destroy_all
 User.destroy_all
 
 puts "Creating users..."
-User.create!(email: "carlosramirez@medhora.com", pasword: "123456")
-User.create!(email: "anatorres@medhora.com", pasword: "123456")
+User.create!(email: "carlosramirez@medhora.com", password: "123456")
+User.create!(email: "anatorres@medhora.com", password: "123456")
 
 puts "Creating doctors..."
 
