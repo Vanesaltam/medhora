@@ -1,25 +1,51 @@
-<h2>Sign up</h2>
+<div class="container my-5 py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-5">
+      
+      <div class="card shadow-sm border-0 p-4 bg-white rounded-4">
+        
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-dark h3 mb-2">Crear cuenta usuario</h2>
+          <p class="text-muted small">
+            ¿Ya tenés una cuenta? <%= link_to "Iniciá sesión", new_session_path(resource_name), class: "text-decoration-none fw-semibold text-primary" %>
+          </p>
+        </div>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+          <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" }%>
-    <%= f.input :password,
-                required: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
+          <div class="form-inputs">
+            <%= f.input :email,
+                        required: true,
+                        autofocus: true,
+                        label: "Correo electrónico",
+                        input_html: { autocomplete: "email", class: "form-control form-control-lg rounded-3 fs-6 mb-3" },
+                        label_html: { class: "form-label text-secondary small fw-medium mb-1" } %>
+            
+            <%= f.input :password,
+                        required: true,
+                        label: "Contraseña",
+                        hint: ("#{@minimum_password_length} caracteres mínimo" if @minimum_password_length),
+                        input_html: { autocomplete: "new-password", class: "form-control form-control-lg rounded-3 fs-6 mb-1" },
+                        label_html: { class: "form-label text-secondary small fw-medium mb-1" },
+                        hint_html: { class: "form-text text-muted small mb-3 block" } %>
+            
+            <%= f.input :password_confirmation,
+                        required: true,
+                        label: "Confirmar contraseña",
+                        input_html: { autocomplete: "new-password", class: "form-control form-control-lg rounded-3 fs-6 mb-4" },
+                        label_html: { class: "form-label text-secondary small fw-medium mb-1" } %>
+          </div>
+
+          <div class="form-actions">
+            <%= f.button :submit, "Registrarse", class: "btn btn-primary btn-lg w-full w-100 rounded-3 py-2 fs-6 fw-semibold shadow-sm mb-3" %>
+          </div>
+        <% end %>
+
+        <div class="text-center pt-2 border-top border-light">
+          <%= render "devise/shared/links" %>
+        </div>
+
+      </div> </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
