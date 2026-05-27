@@ -1,2 +1,68 @@
-<h1>hola</h1>
-<%= link_to "iniciar sesion", new_user_registration_path %>
+<div class="container my-5">
+  <div class="d-flex flex-column align-items-center text-center mb-5">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="medhoraGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3B82F6"/>
+            <stop offset="100%" stop-color="#06B6D4"/>
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M25 25 Q20 25 20 30 V78 Q20 84 26 84 H38 L34 101 L53 84 H90 Q100 84 100 74 V30 Q100 25 95 25 Z"
+          fill="none"
+          stroke="url(#medhoraGradient)"
+          stroke-width="7"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M35 60 H48 L54 45 L63 75 L70 58 H85"
+          fill="none"
+          stroke="url(#medhoraGradient)"
+          stroke-width="7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+
+        <path d="M80 38 L84 46 L92 50 L84 54 L80 62 L76 54 L68 50 L76 46 Z"
+          fill="#06B6D4"/>
+      </svg>
+
+      <div class="text-start">
+        <h1><span>Med</span><strong>Hora</strong></h1>
+        <p class="brand-subtitle">AI Medical Assistant</p>
+      </div>
+    </div>
+    
+    <p class="text-muted mt-4">Seleccioná un profesional para iniciar tu consulta médica asistida por IA</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% @medicos.each do |medico| %>
+      <div class="col">
+        <%= link_to root_path, class: "text-decoration-none" do %>
+          <div class="card h-100 border-0 shadow-sm rounded-4 text-dark bg-white">
+            <div class="card-body p-4 d-flex flex-column align-items-center text-center">
+              
+              <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold mb-3" style="width: 80px; height: 80px; font-size: 1.8rem;">
+                <%= medico[:nombre].first if medico[:nombre].present? %>
+              </div>
+
+              <h5 class="card-title mb-1 fw-semibold"><%= medico[:nombre] %></h5>
+              <p class="card-text text-primary small mb-3 fw-medium"><%= medico[:specialty] || medico[:especialidad] %></p>
+              
+              <p class="card-text text-muted small flex-grow-1">
+                <%= medico[:descripcion] %>
+              </p>
+
+              <span class="text-primary small fw-semibold mt-3">Consultar Profesional →</span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
