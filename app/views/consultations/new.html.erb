@@ -1,0 +1,80 @@
+<div class="min-h-screen bg-slate-50 text-slate-950">
+  <header class="h-20 bg-white/90 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto h-full px-6 md:px-12 flex items-center justify-between">
+      <%= link_to root_path, class: "flex items-center gap-2" do %>
+        <span class="material-symbols-outlined text-blue-600 text-3xl">medical_services</span>
+        <span class="font-bold text-2xl">MedHora</span>
+      <% end %>
+
+      <span class="text-sm text-slate-500">Consulta médica asistida por IA</span>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 md:px-12 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
+      <aside class="space-y-6">
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <p class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3">Consulta IA</p>
+          <h1 class="text-3xl font-bold tracking-tight">Cuéntanos qué síntomas tienes</h1>
+          <p class="text-slate-600 mt-4 leading-relaxed">
+            La IA te hará preguntas de seguimiento para orientar mejor tu caso.
+          </p>
+        </div>
+
+        <div class="bg-blue-950 text-white rounded-3xl p-6 shadow-sm">
+          <h2 class="font-bold text-lg">Importante</h2>
+          <p class="text-blue-100 text-sm mt-3 leading-relaxed">
+            MedHora no sustituye una consulta médica profesional. Si presentas una emergencia, llama a servicios de emergencia.
+          </p>
+        </div>
+      </aside>
+
+      <section class="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden min-h-[720px] flex flex-col">
+        <div class="px-6 py-5 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+              <span class="material-symbols-outlined text-blue-600">smart_toy</span>
+            </div>
+
+            <div>
+              <h2 class="font-bold text-lg">MedHora AI</h2>
+              <p class="text-xs text-blue-600 font-semibold">● En línea</p>
+            </div>
+          </div>
+
+          <%= link_to "Salir", root_path, class: "text-sm font-semibold text-slate-500 hover:text-blue-600" %>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 bg-gradient-to-b from-white to-slate-50">
+          <div class="flex justify-start">
+            <div class="max-w-[85%] md:max-w-[65%] bg-blue-50 border border-blue-100 px-5 py-4 rounded-3xl rounded-tl-none shadow-sm">
+              <p class="text-slate-800 leading-relaxed">
+                Hola 👋 Soy MedHora AI. Describe qué síntomas tienes, desde cuándo los presentas y qué tan intensos son.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-200 p-4 md:p-6 bg-white">
+          <form class="flex items-end gap-3">
+            <textarea
+              rows="1"
+              placeholder="Escribe tus síntomas..."
+              class="flex-1 resize-none rounded-2xl border-slate-300 px-5 py-4 text-sm focus:border-blue-600 focus:ring-blue-600"></textarea>
+
+            <button
+              type="button"
+              class="bg-blue-600 text-white rounded-2xl px-6 py-4 font-bold hover:bg-blue-700 transition flex items-center gap-2">
+              Enviar
+              <span class="material-symbols-outlined text-sm">send</span>
+            </button>
+          </form>
+
+          <p class="text-xs text-slate-400 mt-3 text-center">
+            Esta orientación es informativa y no reemplaza atención médica profesional.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

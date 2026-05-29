@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :consultations, only: [:new]
   resources :medicos, only: [:index, :show]
   devise_for :users
   get  "doctors/sign_in",  to: "doctors/sessions#new",    as: :new_doctor_session
