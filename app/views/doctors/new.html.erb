@@ -1,0 +1,222 @@
+<style>
+  :root {
+    --mh-blue: #3B82F6;
+    --mh-cyan: #06B6D4;
+    --mh-gradient: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  }
+  .mh-btn-primary { background: var(--mh-gradient); border: none; color: white; transition: opacity 0.2s; }
+  .mh-btn-primary:hover { opacity: 0.88; color: white; }
+  .mh-icon-badge {
+    width: 72px; height: 72px; background: var(--mh-gradient);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;
+  }
+  .mh-section-card { border: none; box-shadow: 0 2px 12px rgba(59,130,246,0.08); border-radius: 14px; overflow: hidden; }
+  .mh-card-header { background: var(--mh-gradient); color: white; padding: 1rem 1.5rem; }
+  .form-control:focus, .form-select:focus { border-color: #3B82F6; box-shadow: 0 0 0 0.2rem rgba(59,130,246,0.15); }
+  .mh-upload-zone {
+    border: 2px dashed #93c5fd; border-radius: 12px; background: rgba(59,130,246,0.03);
+    padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .mh-upload-zone:hover, .mh-upload-zone.drag-over { border-color: #3B82F6; background: rgba(59,130,246,0.07); }
+  .mh-pdf-preview {
+    display: flex; align-items: center; gap: 0.75rem; background: #eff6ff;
+    border: 1px solid #bfdbfe; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 0.75rem;
+  }
+  .mh-steps { display: flex; gap: 1rem; }
+  .mh-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center; }
+  .mh-step-num {
+    width: 32px; height: 32px; background: var(--mh-gradient); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+  }
+</style>
+
+<div class="container py-5" style="max-width: 660px;">
+
+  <%# Cabecera %>
+  <div class="text-center mb-4">
+    <div class="mh-icon-badge mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="white" viewBox="0 0 24 24">
+        <path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2zm-1 9v2h2v-2h-1zm1 3a7 7 0 0 0-7 7h2a5 5 0 0 1 10 0h2a7 7 0 0 0-7-7zm-.5 2h1v4h-1zm-.75 1.5h2.5v1.5h-2.5z"/>
+      </svg>
+    </div>
+    <h4 class="fw-bold mb-1" style="color:#1e3a5f;">Registro de Médico</h4>
+    <p class="text-muted small">Crea tu cuenta profesional en MedHora</p>
+  </div>
+
+  <%# Pasos de verificación %>
+  <div class="card mh-section-card mb-4">
+    <div class="card-body p-4">
+      <p class="fw-semibold small text-center mb-3" style="color:#1e3a5f;">¿Cómo funciona la verificación?</p>
+      <div class="mh-steps">
+        <div class="mh-step">
+          <div class="mh-step-num">1</div>
+          <small class="text-muted">Completa el formulario y sube tu título en PDF</small>
+        </div>
+        <div class="mh-step">
+          <div class="mh-step-num">2</div>
+          <small class="text-muted">Nuestro equipo revisa tu documentación</small>
+        </div>
+        <div class="mh-step">
+          <div class="mh-step-num">3</div>
+          <small class="text-muted">Recibirás confirmación cuando tu cuenta esté activa</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# Errores %>
+  <% if @user.errors.any? || @doctor.errors.any? %>
+    <div class="alert alert-danger rounded-3 mb-4">
+      <ul class="mb-0 ps-3">
+        <% (@user.errors.full_messages + @doctor.errors.full_messages).each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with url: doctors_path, method: :post, html: { multipart: true } do |f| %>
+
+    <%# Datos personales %>
+    <div class="card mh-section-card mb-4">
+      <div class="mh-card-header">
+        <h6 class="mb-0 fw-semibold">Datos Personales</h6>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Nombre(s) <span class="text-danger">*</span></label>
+            <%= text_field_tag "doctor[first_name]", @doctor.first_name, class: "form-control", placeholder: "Ej: Carlos Andrés", required: true %>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Apellido(s) <span class="text-danger">*</span></label>
+            <%= text_field_tag "doctor[last_name]", @doctor.last_name, class: "form-control", placeholder: "Ej: Ramírez Gómez", required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Información profesional %>
+    <div class="card mh-section-card mb-4">
+      <div class="mh-card-header">
+        <h6 class="mb-0 fw-semibold">Información Profesional</h6>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Especialidad <span class="text-danger">*</span></label>
+            <%= select_tag "doctor[specialty]",
+                options_for_select([
+                  "Medicina General", "Cardiología", "Dermatología", "Endocrinología",
+                  "Gastroenterología", "Ginecología y Obstetricia", "Neurología", "Nefrología",
+                  "Oftalmología", "Oncología", "Otorrinolaringología", "Pediatría", "Psiquiatría",
+                  "Neumología", "Reumatología", "Traumatología y Ortopedia", "Urología",
+                  "Cirugía General", "Anestesiología", "Radiología e Imágenes"
+                ], @doctor.specialty),
+                include_blank: "— Selecciona —",
+                class: "form-select", required: true %>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">N.º de Matrícula Profesional <span class="text-danger">*</span></label>
+            <%= text_field_tag "doctor[license_number]", @doctor.license_number, class: "form-control", placeholder: "Ej: MP 12345", required: true %>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Precio de Consulta ($)</label>
+            <%= number_field_tag "doctor[consultation_price]", @doctor.consultation_price, class: "form-control", placeholder: "Ej: 5000", min: 0 %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Título profesional %>
+    <div class="card mh-section-card mb-4">
+      <div class="mh-card-header">
+        <h6 class="mb-0 fw-semibold">Título o Diploma Profesional <span class="fw-normal opacity-75">(obligatorio)</span></h6>
+      </div>
+      <div class="card-body p-4">
+        <p class="text-muted small mb-3">
+          Sube una copia escaneada de tu título universitario o diploma habilitante en formato PDF.
+          Este documento es revisado por nuestro equipo antes de activar tu cuenta.
+        </p>
+
+        <label for="doctor_medical_certificate" class="mh-upload-zone d-block" id="upload-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#3B82F6" viewBox="0 0 24 24" class="mb-2">
+            <path d="M12 2a1 1 0 0 1 .707.293l4 4a1 1 0 0 1-1.414 1.414L13 5.414V16a1 1 0 0 1-2 0V5.414L8.707 7.707A1 1 0 0 1 7.293 6.293l4-4A1 1 0 0 1 12 2zM4 17a1 1 0 0 1 1 1v2h14v-2a1 1 0 0 1 2 0v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1z"/>
+          </svg>
+          <p class="fw-semibold mb-1" style="color:#3B82F6;">Haz clic para seleccionar el PDF</p>
+          <p class="text-muted small mb-0">o arrastra y suelta aquí · Solo PDF · Máx. 10 MB</p>
+          <%= file_field_tag "doctor[medical_certificate]", id: "doctor_medical_certificate", accept: ".pdf", style: "display:none", required: true %>
+        </label>
+
+        <div class="mh-pdf-preview d-none" id="pdf-preview">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#ef4444" viewBox="0 0 24 24">
+            <path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 8H13V3.5zM8 13h8v1H8v-1zm0 3h5v1H8v-1z"/>
+          </svg>
+          <span class="small fw-semibold text-truncate" id="pdf-filename"></span>
+          <span class="badge ms-auto" style="background: var(--mh-gradient);">PDF listo</span>
+        </div>
+      </div>
+    </div>
+
+    <%# Credenciales %>
+    <div class="card mh-section-card mb-4">
+      <div class="mh-card-header">
+        <h6 class="mb-0 fw-semibold">Credenciales de Acceso</h6>
+      </div>
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-semibold small">Correo Electrónico <span class="text-danger">*</span></label>
+            <%= email_field_tag "user[email]", @user.email, class: "form-control", placeholder: "doctor@ejemplo.com", autocomplete: "email", required: true %>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Contraseña <span class="text-danger">*</span></label>
+            <%= password_field_tag "user[password]", nil, class: "form-control", placeholder: "Mínimo 6 caracteres", autocomplete: "new-password", required: true, minlength: 6 %>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold small">Confirmar Contraseña <span class="text-danger">*</span></label>
+            <%= password_field_tag "user[password_confirmation]", nil, class: "form-control", placeholder: "Repite la contraseña", autocomplete: "new-password", required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Envío %>
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn mh-btn-primary btn-lg fw-semibold py-2">
+        Enviar solicitud de registro
+      </button>
+      <div class="text-center">
+        <small class="text-muted">
+          ¿Ya tienes cuenta aprobada?
+          <%= link_to "Inicia sesión", new_doctor_session_path, class: "fw-semibold text-decoration-none", style: "color:#3B82F6;" %>
+        </small>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input   = document.getElementById("doctor_medical_certificate");
+    const preview = document.getElementById("pdf-preview");
+    const fname   = document.getElementById("pdf-filename");
+    const zone    = document.getElementById("upload-label");
+    if (!input) return;
+    input.addEventListener("change", function () {
+      if (this.files[0]) { fname.textContent = this.files[0].name; preview.classList.remove("d-none"); }
+    });
+    zone.addEventListener("dragover",  e => { e.preventDefault(); zone.classList.add("drag-over"); });
+    zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+    zone.addEventListener("drop", e => {
+      e.preventDefault(); zone.classList.remove("drag-over");
+      if (e.dataTransfer.files[0]) {
+        input.files = e.dataTransfer.files;
+        fname.textContent = e.dataTransfer.files[0].name;
+        preview.classList.remove("d-none");
+      }
+    });
+  });
+</script>

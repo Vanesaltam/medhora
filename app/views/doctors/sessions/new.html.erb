@@ -1,0 +1,102 @@
+<style>
+  :root {
+    --mh-blue: #3B82F6;
+    --mh-cyan: #06B6D4;
+    --mh-gradient: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  }
+
+  .mh-btn-primary {
+    background: var(--mh-gradient);
+    border: none;
+    color: white;
+    transition: opacity 0.2s;
+  }
+
+  .mh-btn-primary:hover {
+    opacity: 0.88;
+    color: white;
+  }
+
+  .mh-icon-badge {
+    width: 72px;
+    height: 72px;
+    background: var(--mh-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .mh-section-card {
+    border: none;
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.10);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .mh-card-header {
+    background: var(--mh-gradient);
+    color: white;
+    padding: 1rem 1.5rem;
+  }
+
+  .form-control:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+  }
+</style>
+
+<div class="container py-5" style="max-width: 460px;">
+  <div class="text-center mb-4">
+    <div class="mh-icon-badge mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
+        <path d="M8 1a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 1a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+        <path d="M5.5 10A2.5 2.5 0 0 0 3 12.5V14h10v-1.5A2.5 2.5 0 0 0 10.5 10h-5z"/>
+        <path d="M8 8a1 1 0 0 1 1 1v1H7V9a1 1 0 0 1 1-1z" fill="white"/>
+        <rect x="7.25" y="9" width="1.5" height="3" rx="0.5" fill="white"/>
+        <rect x="6" y="10.25" width="4" height="1.5" rx="0.5" fill="white"/>
+      </svg>
+    </div>
+    <h4 class="fw-bold mb-1" style="color: #1e3a5f;">Acceso Médico</h4>
+    <p class="text-muted small">Inicia sesión con tu cuenta de médico</p>
+  </div>
+
+  <% if flash[:alert] %>
+    <div class="alert alert-danger rounded-3"><%= flash[:alert] %></div>
+  <% end %>
+
+  <div class="card mh-section-card">
+    <div class="mh-card-header">
+      <h6 class="mb-0 fw-semibold">Iniciar Sesión</h6>
+    </div>
+    <div class="card-body p-4">
+      <%= form_with url: doctor_session_path, method: :post do |f| %>
+        <div class="mb-3">
+          <%= f.label :email, "Correo electrónico", class: "form-label fw-semibold small" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "form-control", placeholder: "doctor@ejemplo.com",
+              name: "user[email]" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :password, "Contraseña", class: "form-label fw-semibold small" %>
+          <%= f.password_field :password, autocomplete: "current-password",
+              class: "form-control", placeholder: "••••••••",
+              name: "user[password]" %>
+        </div>
+
+        <div class="d-grid">
+          <%= f.submit "Ingresar", class: "btn mh-btn-primary fw-semibold py-2" %>
+        </div>
+      <% end %>
+
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          ¿No tienes cuenta?
+          <%= link_to "Regístrate como médico", new_doctor_path, class: "text-decoration-none fw-semibold", style: "color: #3B82F6;" %>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
