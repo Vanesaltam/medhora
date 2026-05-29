@@ -1,7 +1,6 @@
 class Chat < ApplicationRecord
-  belongs_to :appointment
-  belongs_to :patient
-  belongs_to :doctor
+  acts_as_chat
 
-  has_many :messages, dependent: :destroy
+  belongs_to :patient
+  has_many :chats, dependent: :destroy
 end
