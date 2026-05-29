@@ -1,68 +1,170 @@
-<div class="container my-5">
-  <div class="d-flex flex-column align-items-center text-center mb-5">
-    <div class="brand">
-      <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="medhoraGradient" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#3B82F6"/>
-            <stop offset="100%" stop-color="#06B6D4"/>
-          </linearGradient>
-        </defs>
-
-        <path
-          d="M25 25 Q20 25 20 30 V78 Q20 84 26 84 H38 L34 101 L53 84 H90 Q100 84 100 74 V30 Q100 25 95 25 Z"
-          fill="none"
-          stroke="url(#medhoraGradient)"
-          stroke-width="7"
-          stroke-linejoin="round"
-        />
-
-        <path
-          d="M35 60 H48 L54 45 L63 75 L70 58 H85"
-          fill="none"
-          stroke="url(#medhoraGradient)"
-          stroke-width="7"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-
-        <path d="M80 38 L84 46 L92 50 L84 54 L80 62 L76 54 L68 50 L76 46 Z"
-          fill="#06B6D4"/>
-      </svg>
-
-      <div class="text-start">
-        <h1><span>Med</span><strong>Hora</strong></h1>
-        <p class="brand-subtitle">AI Medical Assistant</p>
-      </div>
+<nav class="fixed top-0 z-50 w-full h-20 bg-white/80 backdrop-blur-xl border-b border-slate-200">
+  <div class="flex justify-between items-center w-full px-6 md:px-12 h-full max-w-7xl mx-auto">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-blue-600 text-3xl">medical_services</span>
+      <span class="font-bold text-2xl text-slate-950">MedHora</span>
     </div>
-    
-    <p class="text-muted mt-4">Seleccioná un profesional para iniciar tu consulta médica asistida por IA</p>
-  </div>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <% @medicos.each do |medico| %>
-      <div class="col">
-        <%= link_to root_path, class: "text-decoration-none" do %>
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-dark bg-white">
-            <div class="card-body p-4 d-flex flex-column align-items-center text-center">
-              
-              <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center fw-bold mb-3" style="width: 80px; height: 80px; font-size: 1.8rem;">
-                <%= medico[:nombre].first if medico[:nombre].present? %>
+    <div class="hidden md:flex items-center gap-10">
+      <a class="text-sm font-semibold text-slate-600 hover:text-blue-600" href="#como-funciona">Cómo funciona</a>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <button class="hidden md:block text-sm font-semibold text-slate-600 hover:text-blue-600">Iniciar sesión</button>
+      <button class="bg-blue-600 text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-blue-700 transition">
+        Iniciar consulta
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="pt-20 bg-slate-50 text-slate-950 overflow-x-hidden">
+  <section class="relative hero-gradient py-24 lg:py-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="space-y-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-600/20 text-blue-600 text-xs font-bold uppercase tracking-wider">
+          <span class="material-symbols-outlined text-sm">auto_awesome</span>
+          Salud impulsada por IA
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight leading-none">
+          Encuentra al médico adecuado con IA
+        </h1>
+
+        <p class="text-lg md:text-xl text-slate-600 max-w-xl leading-relaxed">
+          MedHora analiza tus síntomas, te da orientación inicial y te ayuda a conectar con el especialista más adecuado para tu caso.
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <button class="bg-blue-600 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-blue-700 hover:-translate-y-1 transition flex items-center gap-2">
+            Iniciar consulta con IA
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+
+          <a href="#como-funciona" class="border border-slate-300 text-slate-900 font-bold px-8 py-4 rounded-xl hover:bg-white transition">
+            Cómo funciona
+          </a>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="glass-card rounded-3xl p-4 shadow-2xl animate-float">
+          <div class="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <div class="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-blue-600">smart_toy</span>
+              </div>
+              <div>
+                <p class="font-bold">MedHora AI</p>
+                <p class="text-xs text-blue-600">● Activo</p>
+              </div>
+            </div>
+
+            <div class="p-6 space-y-4 min-h-[360px]">
+              <div class="flex justify-end">
+                <div class="max-w-[80%] bg-slate-200 px-5 py-4 rounded-2xl rounded-tr-none">
+                  He tenido dolores de cabeza recurrentes detrás del ojo derecho durante los últimos tres días.
+                </div>
               </div>
 
-              <h5 class="card-title mb-1 fw-semibold"><%= medico[:nombre] %></h5>
-              <p class="card-text text-primary small mb-3 fw-medium"><%= medico[:specialty] || medico[:especialidad] %></p>
-              
-              <p class="card-text text-muted small flex-grow-1">
-                <%= medico[:descripcion] %>
-              </p>
+              <div class="flex justify-start">
+                <div class="max-w-[80%] bg-blue-50 border border-blue-100 px-5 py-4 rounded-2xl rounded-tl-none shadow-sm">
+                  <p>Entiendo que debe ser incómodo. ¿Has presentado cambios en la visión, sensibilidad a la luz o náuseas?</p>
+                  <p class="text-xs text-blue-600 mt-2 font-semibold">Analizando...</p>
+                </div>
+              </div>
 
-              <span class="text-primary small fw-semibold mt-3">Consultar Profesional →</span>
+              <div class="flex justify-end">
+                <div class="max-w-[80%] bg-slate-200 px-5 py-4 rounded-2xl rounded-tr-none">
+                  Un poco de sensibilidad a la luz, sí. No tengo náuseas.
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 border-t border-slate-200">
+              <div class="flex items-center gap-3 px-4 py-2 bg-white rounded-full border border-slate-300">
+                <input class="flex-1 bg-transparent border-none focus:ring-0 text-sm" placeholder="Escribe tus síntomas..." type="text">
+                <button class="bg-blue-600 text-white p-3 rounded-full flex items-center justify-center">
+                  <span class="material-symbols-outlined text-sm">send</span>
+                </button>
+              </div>
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
-</div>
+    </div>
+  </section>
 
+  <section id="como-funciona" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight">¿Cómo funciona?</h2>
+        <p class="text-slate-600 mt-4 text-lg">Una ruta simple para recibir orientación y encontrar atención médica adecuada.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-600 mx-auto flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-blue-600">chat_paste_go</span>
+          </div>
+          <h3 class="font-bold text-xl">Describe</h3>
+          <p class="text-slate-600 text-sm">Cuéntale a la IA tus síntomas y antecedentes relevantes.</p>
+        </div>
+
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-white border-2 border-slate-300 mx-auto flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-blue-600">analytics</span>
+          </div>
+          <h3 class="font-bold text-xl">Analiza</h3>
+          <p class="text-slate-600 text-sm">La IA realiza preguntas clave para entender mejor tu caso.</p>
+        </div>
+
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-white border-2 border-slate-300 mx-auto flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-blue-600">summarize</span>
+          </div>
+          <h3 class="font-bold text-xl">Resume</h3>
+          <p class="text-slate-600 text-sm">Recibes una orientación inicial clara y estructurada.</p>
+        </div>
+
+        <div class="text-center space-y-4">
+          <div class="w-16 h-16 rounded-full bg-white border-2 border-slate-300 mx-auto flex items-center justify-center shadow-md">
+            <span class="material-symbols-outlined text-blue-600">assignment_turned_in</span>
+          </div>
+          <h3 class="font-bold text-xl">Conecta</h3>
+          <p class="text-slate-600 text-sm">Encuentra especialistas adecuados según tus síntomas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-24 bg-blue-950 text-white text-center px-6">
+    <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Comienza tu orientación médica</h2>
+    <p class="text-blue-100 mt-5 max-w-2xl mx-auto text-lg">
+      Recibe una primera guía en minutos y encuentra el especialista más adecuado para ti.
+    </p>
+    <button class="mt-8 bg-blue-600 text-white font-bold px-8 py-4 rounded-xl hover:bg-blue-500 transition">
+      Iniciar evaluación
+    </button>
+  </section>
+</main>
+
+<footer class="bg-slate-950 text-white px-6 md:px-12 py-10">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+    <div>
+      <div class="flex items-center gap-2 font-bold text-xl">
+        <span class="material-symbols-outlined text-blue-500">medical_services</span>
+        MedHora
+      </div>
+      <p class="text-slate-400 mt-3 max-w-md">
+        Orientación médica inteligente impulsada por IA.
+      </p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4 md:gap-8 text-sm text-slate-300">
+      <a href="#">Aviso de privacidad</a>
+      <a href="#">Términos y condiciones</a>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+</footer>
