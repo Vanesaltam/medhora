@@ -1,0 +1,117 @@
+<style>
+  :root {
+    --mh-blue: #3B82F6;
+    --mh-cyan: #06B6D4;
+    --mh-gradient: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  }
+  .mh-btn-outline {
+    border: 2px solid #3B82F6; color: #3B82F6; background: white;
+    transition: all 0.2s; font-weight: 600;
+  }
+  .mh-btn-outline:hover { background: #3B82F6; color: white; }
+  .mh-status-card { border: none; box-shadow: 0 4px 24px rgba(59,130,246,0.12); border-radius: 18px; overflow: hidden; }
+  .mh-icon-badge {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto;
+  }
+  .mh-icon-badge.pending { background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%); }
+  .mh-icon-badge.rejected { background: linear-gradient(135deg, #EF4444 0%, #F87171 100%); }
+  .mh-step { display: flex; align-items: flex-start; gap: 1rem; }
+  .mh-step-dot {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white;
+  }
+  .mh-step-dot.done { background: var(--mh-gradient); }
+  .mh-step-dot.active { background: #F59E0B; }
+  .mh-step-dot.waiting { background: #D1D5DB; }
+</style>
+
+<div class="container py-5" style="max-width: 560px;">
+
+  <% is_rejected = flash[:alert].present? %>
+
+  <%# Ícono de estado %>
+  <div class="text-center mb-4">
+    <div class="mh-icon-badge <%= is_rejected ? 'rejected' : 'pending' %> mb-3">
+      <% if is_rejected %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 24 24">
+          <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 2a8 8 0 1 1 0 16A8 8 0 0 1 12 4zm-1 4v5h2V8h-2zm0 7v2h2v-2h-2z"/>
+        </svg>
+      <% else %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" viewBox="0 0 24 24">
+          <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 2a8 8 0 1 1 0 16A8 8 0 0 1 12 4zm-1 5v5l4 2.5-.75-1.3L13 12.2V7h-2z"/>
+        </svg>
+      <% end %>
+    </div>
+
+    <% if is_rejected %>
+      <h4 class="fw-bold mb-1" style="color:#DC2626;">Solicitud Rechazada</h4>
+      <p class="text-muted small">Tu documentación no pudo ser verificada</p>
+    <% else %>
+      <h4 class="fw-bold mb-1" style="color:#1e3a5f;">Solicitud en Revisión</h4>
+      <p class="text-muted small">Tu cuenta está siendo verificada por nuestro equipo</p>
+    <% end %>
+  </div>
+
+  <%# Flash messages %>
+  <% if flash[:alert] %>
+    <div class="alert alert-danger rounded-3 mb-4"><%= flash[:alert] %></div>
+  <% elsif flash[:notice] %>
+    <div class="alert rounded-3 mb-4" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;"><%= flash[:notice] %></div>
+  <% end %>
+
+  <div class="card mh-status-card mb-4">
+    <div class="card-body p-4">
+
+      <% if is_rejected %>
+        <h6 class="fw-bold mb-3" style="color:#DC2626;">¿Qué significa esto?</h6>
+        <p class="text-muted small mb-4">
+          Nuestro equipo no pudo verificar tu título o diploma profesional. Esto puede deberse a que el documento era ilegible, incompleto o no correspondía a tu especialidad declarada.
+        </p>
+        <h6 class="fw-bold mb-3" style="color:#1e3a5f;">¿Qué podés hacer?</h6>
+        <ul class="text-muted small ps-3 mb-0">
+          <li class="mb-2">Contactá a nuestro equipo de soporte: <strong>soporte@medhora.com</strong></li>
+          <li class="mb-2">Volvé a registrarte con documentación actualizada y legible</li>
+          <li>Asegurate de que el PDF sea de tu título habilitante oficial</li>
+        </ul>
+      <% else %>
+        <h6 class="fw-semibold mb-4" style="color:#1e3a5f;">Estado de tu solicitud</h6>
+
+        <div class="d-flex flex-column gap-3">
+          <div class="mh-step">
+            <div class="mh-step-dot done">✓</div>
+            <div>
+              <p class="fw-semibold small mb-0">Registro completado</p>
+              <p class="text-muted" style="font-size:0.8rem;">Formulario y documentación enviados correctamente.</p>
+            </div>
+          </div>
+
+          <div class="mh-step">
+            <div class="mh-step-dot active">⋯</div>
+            <div>
+              <p class="fw-semibold small mb-0" style="color:#D97706;">Revisión en proceso</p>
+              <p class="text-muted" style="font-size:0.8rem;">Nuestro equipo está verificando tu título o diploma profesional. Este proceso tarda entre 24 y 48 horas hábiles.</p>
+            </div>
+          </div>
+
+          <div class="mh-step">
+            <div class="mh-step-dot waiting">3</div>
+            <div>
+              <p class="fw-semibold small mb-0 text-muted">Activación de cuenta</p>
+              <p class="text-muted" style="font-size:0.8rem;">Recibirás una notificación cuando tu cuenta esté aprobada y lista para usar.</p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="d-grid gap-2">
+    <% if is_rejected %>
+      <%= link_to "Registrarme nuevamente", new_doctor_path, class: "btn btn-danger fw-semibold py-2" %>
+    <% end %>
+    <%= link_to "Volver al inicio de sesión", new_doctor_session_path, class: "btn mh-btn-outline py-2" %>
+    <%= link_to "Ir al inicio", root_path, class: "btn btn-light fw-semibold py-2 text-muted" %>
+  </div>
+
+</div>

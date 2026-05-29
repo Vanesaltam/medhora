@@ -1,9 +1,7 @@
 class Doctor < ApplicationRecord
   belongs_to :user
 
-  has_many :appointments, dependent: :destroy
   has_many :chats, dependent: :destroy
-  has_many :reviews, dependent: :destroy
 
   has_one_attached :medical_certificate
 

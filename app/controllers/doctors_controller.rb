@@ -6,6 +6,9 @@ class DoctorsController < ApplicationController
     @doctor = Doctor.find(params[:id])
   end
 
+  def pending
+  end
+
   def new
     @user   = User.new
     @doctor = Doctor.new
@@ -13,17 +16,25 @@ class DoctorsController < ApplicationController
 
   def create
     @user   = User.new(user_params)
-    @doctor = @user.build_doctor(doctor_params)
+    @doctor = Doctor.new(doctor_params)
+    @doctor.user = @user
+
+    user_valid   = @user.valid?
+    doctor_valid = @doctor.valid?
+
+    unless user_valid && doctor_valid
+      render :new, status: :unprocessable_entity
+      return
+    end
 
     ActiveRecord::Base.transaction do
       @user.save!
       @doctor.save!
     end
 
-    redirect_to new_doctor_session_path,
-      notice: "Solicitud enviada. Revisaremos tu título y te notificaremos cuando tu cuenta esté aprobada."
-  rescue ActiveRecord::RecordInvalid => e
-    @doctor.errors.merge!(e.record.errors) if e.record != @doctor
+    redirect_to doctor_pending_path,
+      notice: "¡Solicitud enviada! Revisaremos tu título y te notificaremos cuando tu cuenta esté aprobada."
+  rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity
   end
 

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get  "doctors/sign_in",  to: "doctors/sessions#new",    as: :new_doctor_session
   post "doctors/sign_in",  to: "doctors/sessions#create",  as: :doctor_session
   delete "doctors/sign_out", to: "doctors/sessions#destroy", as: :destroy_doctor_session
+  get  "doctors/pending",  to: "doctors#pending",          as: :doctor_pending
   root to: "pages#home"
   resources :doctors
   resources :patients

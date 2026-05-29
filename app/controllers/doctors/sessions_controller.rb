@@ -12,11 +12,11 @@ class Doctors::SessionsController < ApplicationController
         flash.now[:alert] = "No tienes una cuenta de médico."
         render :new, status: :unprocessable_entity
       elsif doctor.pending?
-        flash.now[:alert] = "Tu cuenta está pendiente de verificación. Te notificaremos cuando sea aprobada."
-        render :new, status: :unprocessable_entity
+        redirect_to doctor_pending_path,
+          notice: "Tu cuenta está pendiente de verificación. Te avisaremos cuando sea aprobada."
       elsif doctor.rejected?
-        flash.now[:alert] = "Tu solicitud fue rechazada. Contáctanos a soporte@medhora.com para más información."
-        render :new, status: :unprocessable_entity
+        redirect_to doctor_pending_path,
+          alert: "Tu solicitud fue rechazada. Contactá a soporte@medhora.com para más información."
       else
         sign_in user
         redirect_to doctor_path(doctor), notice: "Bienvenido, Dr. #{doctor.last_name}"

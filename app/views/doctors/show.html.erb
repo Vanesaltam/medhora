@@ -1,0 +1,113 @@
+<style>
+  :root {
+    --mh-blue: #3B82F6;
+    --mh-cyan: #06B6D4;
+    --mh-gradient: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  }
+  .mh-header-card {
+    background: var(--mh-gradient); color: white;
+    border-radius: 18px; padding: 2rem 2.5rem; position: relative; overflow: hidden;
+  }
+  .mh-header-card::after {
+    content: ""; position: absolute; top: -40px; right: -40px;
+    width: 160px; height: 160px; background: rgba(255,255,255,0.08); border-radius: 50%;
+  }
+  .mh-info-card { border: none; box-shadow: 0 2px 12px rgba(59,130,246,0.08); border-radius: 14px; }
+  .mh-avatar {
+    width: 72px; height: 72px; border-radius: 50%; background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700;
+    border: 3px solid rgba(255,255,255,0.5); flex-shrink: 0;
+  }
+  .mh-label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; }
+  .mh-value { font-size: 0.95rem; font-weight: 500; color: #1e3a5f; }
+  .mh-badge-approved { background: #d1fae5; color: #065f46; border-radius: 999px; padding: 0.3rem 0.9rem; font-size: 0.8rem; font-weight: 600; }
+  .mh-btn-primary { background: var(--mh-gradient); border: none; color: white; transition: opacity 0.2s; }
+  .mh-btn-primary:hover { opacity: 0.88; color: white; }
+  .mh-btn-danger-outline { border: 2px solid #EF4444; color: #EF4444; background: white; transition: all 0.2s; }
+  .mh-btn-danger-outline:hover { background: #EF4444; color: white; }
+</style>
+
+<div class="container py-5" style="max-width: 720px;">
+
+  <% if flash[:notice] %>
+    <div class="alert rounded-3 mb-4" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8;"><%= flash[:notice] %></div>
+  <% end %>
+
+  <%# Header del perfil %>
+  <div class="mh-header-card mb-4">
+    <div class="d-flex align-items-center gap-3">
+      <div class="mh-avatar">
+        <%= @doctor.first_name&.first&.upcase || "M" %>
+      </div>
+      <div class="flex-grow-1">
+        <h4 class="fw-bold mb-1">Dr. <%= @doctor.first_name %> <%= @doctor.last_name %></h4>
+        <p class="mb-1 opacity-90"><%= @doctor.specialty %></p>
+        <span class="mh-badge-approved">✓ Cuenta aprobada</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <%# Información profesional %>
+    <div class="col-12">
+      <div class="card mh-info-card">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-4" style="color:#1e3a5f;">Información Profesional</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <p class="mh-label mb-1">Especialidad</p>
+              <p class="mh-value mb-0"><%= @doctor.specialty || "—" %></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mh-label mb-1">Matrícula Profesional</p>
+              <p class="mh-value mb-0"><%= @doctor.license_number || "—" %></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mh-label mb-1">Precio de Consulta</p>
+              <p class="mh-value mb-0">
+                <% if @doctor.consultation_price.present? %>
+                  $<%= number_with_delimiter(@doctor.consultation_price) %>
+                <% else %>
+                  <span class="text-muted">No especificado</span>
+                <% end %>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="mh-label mb-1">Disponibilidad</p>
+              <p class="mh-value mb-0">
+                <% if @doctor.available? %>
+                  <span style="color:#059669;">● Disponible</span>
+                <% else %>
+                  <span class="text-muted">● No disponible</span>
+                <% end %>
+              </p>
+            </div>
+            <% if @doctor.user %>
+              <div class="col-md-6">
+                <p class="mh-label mb-1">Correo de Contacto</p>
+                <p class="mh-value mb-0"><%= @doctor.user.email %></p>
+              </div>
+            <% end %>
+            <% if @doctor.medical_certificate.attached? %>
+              <div class="col-md-6">
+                <p class="mh-label mb-1">Título Profesional</p>
+                <p class="mh-value mb-0">
+                  <%= link_to "Ver documento PDF", rails_blob_path(@doctor.medical_certificate, disposition: "inline"),
+                      target: "_blank", class: "text-decoration-none", style: "color:#3B82F6;" %>
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# Acciones %>
+    <div class="col-12">
+      <div class="d-flex gap-2 flex-wrap">
+        <%= link_to "Editar perfil", edit_doctor_path(@doctor), class: "btn mh-btn-primary px-4 fw-semibold" %>
+        <%= link_to "Cerrar sesión", destroy_doctor_session_path, data: { turbo_method: :delete }, class: "btn mh-btn-danger-outline px-4 fw-semibold" %>
+      </div>
+    </div>
+  </div>
+</div>
